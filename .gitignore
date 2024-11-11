@@ -1,2 +1,9 @@
 /node_modules
 .env
+
+# Ignorar node_modules en back y front
+/back/node_modules
+/front/node_modules
+
+# Ignorar archivo .env en back
+/back/.env
