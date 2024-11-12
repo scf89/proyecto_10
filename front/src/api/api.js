@@ -1,4 +1,7 @@
+import { showSpinner, hideSpinner } from "../components/Spinner/Spinner";
+
 export const apiFetch = async (endpoint, method = "GET", data = null, token = null, content_type = "application/json") => {
+  showSpinner();
   let url = `http://localhost:5000/api/${endpoint}`; 
   const headers = {};
 
@@ -32,12 +35,26 @@ export const apiFetch = async (endpoint, method = "GET", data = null, token = nu
     if (!response.ok) {
       // Manejo de errores si la respuesta no es exitosa
       const errorData = await response.json();
+      hideSpinner();
       throw new Error(errorData.message || "Error en la solicitud");
     }
     // Si la respuesta es exitosa, devolver los datos
+    hideSpinner();
     return await response.json();
   } catch (error) {
     console.error("Error en la solicitud:", error);
+    hideSpinner();
     throw error;
+  }
+};
+
+
+export const getCoordinatesFromAddress = async (address) => {
+  const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+  const data = await response.json();
+  if (data.length > 0) {
+    return { lat: data[0].lat, lng: data[0].lon };
+  } else {
+    throw new Error("Dirección no encontrada");
   }
 };

@@ -40,9 +40,6 @@ const addEventToUser = async (req, res) => {
   try {
     const { userId } = req.params;
     const { eventId } = req.event._id; // ID del evento a agregar
-    console.log(req.params);
-    console.log(req.body);
-    console.log(eventId);
 
     // Buscar el usuario por ID
     const user = await User.findById(userId);

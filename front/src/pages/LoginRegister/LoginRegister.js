@@ -45,7 +45,7 @@ const Login = (elementoPadre) => {
     inputPass.placeholder = "*****";
     button.textContent = "Login";
   const switchToRegister = document.createElement("p");
-  switchToRegister.textContent = "¿No tienes una cuenta? Regístrate";
+  switchToRegister.textContent = "Don't have an account? Sign up";
   switchToRegister.style.cursor = "pointer";
   switchToRegister.style.color = "blue";
 
@@ -79,7 +79,7 @@ const Register = (elementoPadre) => {
   inputPassConfirm.type = "password";
   inputPassConfirm.placeholder = "Confirm Password";
   button.textContent = "Register";
-  switchToLogin.textContent = "¿Ya tienes una cuenta? Inicia sesión";
+  switchToLogin.textContent = "Already have an account? Log in";
   switchToLogin.style.cursor = "pointer";
   switchToLogin.style.color = "blue";
 
@@ -100,7 +100,6 @@ const Register = (elementoPadre) => {
 };
 
 const submit = async (userName, email, password, form, type) => {
-  showSpinner(form);
   
   // Determinamos el endpoint y el cuerpo de la solicitud en función del tipo
   const endpoint = type === "login" ? "users/login" : "users/register";
@@ -109,8 +108,6 @@ const submit = async (userName, email, password, form, type) => {
   try {
     // Usamos `apiFetch` para hacer la solicitud
     const respuestaFinal = await apiFetch(endpoint, "POST", data);
-
-    hideSpinner(form);
 
     const pError = document.querySelector(".error");
     if (pError) pError.remove();
@@ -126,12 +123,11 @@ const submit = async (userName, email, password, form, type) => {
       submit(null, email, password, form, "login");
     }
   } catch (error) {
-    hideSpinner(form);
     if (error.message.includes("401")) {
       displayError("Usuario o contraseña incorrectos", form);
     } else {
       console.error("Error en la solicitud:", error);
-      alert("Hubo un error en la solicitud");
+      displayError(error.message, form);
     }
   }
 };

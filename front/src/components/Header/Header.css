@@ -20,14 +20,22 @@ nav {
 }
 
 nav a {
-    font-size: 25px;
+    font-size: 15px;
     width: 33.33%; /* Cada enlace ocupa un tercio del ancho de header */
     text-align: center;
     height: 100%; /* Ocupar todo el alto del header */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
+nav a i {
+    font-size: 25px; /* Tamaño del ícono */
+    margin-bottom: 4px; /* Espacio entre ícono y texto */
+}
+
+
 
 nav a.active {
     color: #00078b;

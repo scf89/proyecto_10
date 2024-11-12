@@ -7,14 +7,17 @@ const routes = [
   {
     texto: "Home",
     funcion: Home,
+    icono: "fas fa-home",
   },
   {
     texto: "Settings",
     funcion: Settings,
+    icono: "fas fa-cog",
   },
   {
     texto: "Login",
     funcion: LoginRegister,
+    icono: "fas fa-sign-in-alt",
   },
 ];
 
@@ -27,11 +30,12 @@ export const Header = () => {
   const setActiveLink = (activeText) => {
     const links = nav.querySelectorAll("a");
     links.forEach((link) => {
-      if (link.textContent === activeText) {
-        link.classList.add("active"); // Agregar la clase active
-      } else {
-        link.classList.remove("active"); // Eliminar la clase active de otros
-      }
+      const spanText = link.querySelector("span")?.textContent; // Obtener el texto del span
+        if (spanText === activeText) {
+            link.classList.add("active"); // Agregar la clase active
+        } else {
+            link.classList.remove("active"); // Eliminar la clase active de otros
+        }
     });
   };
 
@@ -40,7 +44,7 @@ export const Header = () => {
     a.href = "#";
 
     if (route.texto === "Login" && localStorage.getItem("token")) {
-      a.textContent = "Logout";
+      a.innerHTML = `<i class="fas fa-sign-out-alt"></i> <span>Logout</span>`;
       a.addEventListener("click", () => {
         localStorage.clear();
         Header();
@@ -50,7 +54,7 @@ export const Header = () => {
       if (!localStorage.getItem("token") && route.texto === "Settings") {
         // No permitir acceso a "Settings" si no hay token
       } else {
-        a.textContent = route.texto;
+        a.innerHTML = `<i class="${route.icono}"></i> <span>${route.texto}</span>`;
         a.addEventListener("click", () => {
           route.funcion();
           setActiveLink(route.texto); // Cambiar la clase active cuando se haga clic

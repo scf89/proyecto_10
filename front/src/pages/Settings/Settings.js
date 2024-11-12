@@ -1,6 +1,7 @@
 import { pintarEventos } from "../Home/Home";
 import "./Settings.css";
-import { apiFetch } from "../../api/api";
+import { apiFetch, getCoordinatesFromAddress } from "../../api/api";
+import { showNotification } from "../../components/Notification/Notification";
 
 export const Settings = async () => {
   const main = document.querySelector("main");
@@ -9,24 +10,14 @@ export const Settings = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
-  /*const res = await fetch(`http://localhost:5000/api/users/${user._id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const usuario = await res.json();*/
+  
   const usuario = await apiFetch(`users/${user._id}`, "GET", null, token);
 
-  // Pintar los eventos del usuario
-  pintarEventos(usuario.eventsAttending, main);
+  
 
   // Añadir icono para abrir el formulario de creación de evento
-  const addEventIcon = document.createElement("img");
-  addEventIcon.src = "/assets/add-event.png"; // Asegúrate de tener una imagen adecuada
-  addEventIcon.className = "add-event-icon";
+  const addEventIcon = document.createElement("i");
+  addEventIcon.className = "fas fa-calendar-plus add-event-icon";
   addEventIcon.addEventListener("click", () => toggleEventForm());
 
   main.appendChild(addEventIcon);
@@ -58,6 +49,9 @@ export const Settings = async () => {
 
   main.appendChild(form);
 
+  // Pintar los eventos del usuario
+  pintarEventos(usuario.eventsAttending, main);
+
 };
 
 // Función para alternar la visibilidad del formulario
@@ -78,12 +72,23 @@ const createEvent = async (form) => {
 
   const token = localStorage.getItem("token");
 
+  let coordinates;
+  try {
+    coordinates = await getCoordinatesFromAddress(address);
+  } catch (error) {
+    showNotification("No se pudieron obtener las coordenadas de la dirección.",false);
+    return;
+  }
+
+
   // Crear una instancia de FormData y agregar los campos
   const formData = new FormData();
   formData.append("title", title);
   formData.append("date", date);
   formData.append("description", description);
   formData.append("address", address);
+  formData.append("location", JSON.stringify({ lat: coordinates.lat, lng: coordinates.lng }));
+
   if (image) {
     formData.append("image", image); // Agregar la imagen si está presente
   }
@@ -92,11 +97,11 @@ const createEvent = async (form) => {
   try {
     const data = await apiFetch("events", "POST", formData, token);
     if (data) {
-      alert("Evento creado con éxito!");
+      showNotification("Evento creado con éxito!", true);
       location.reload();
     }
   } catch (error) {
-    alert("Error al crear el evento.");
+    showNotification("Error al crear el evento.",false);
   }
 };
 

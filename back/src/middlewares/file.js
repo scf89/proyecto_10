@@ -6,7 +6,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'events',
-    allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'webp']
+    allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'webp','avif']
   },
 });
 

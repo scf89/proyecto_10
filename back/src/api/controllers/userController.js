@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 const registerUser = async (req, res) => {
   const { userName, email, password} = req.body;
   const userExists = await User.findOne({ email });
-  console.log(password);
   if (userExists) {
     return res.status(400).json({ message: 'User already exists' });
   }
@@ -21,8 +20,6 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(user);
-  console.log(password);
   if (user && (await bcrypt.compare(password, user.password))) {
     const token = generateToken(user._id);
     return res.status(200).json({ token, user })
@@ -91,9 +88,6 @@ const addEventToUser = async (req, res) => {
   try {
     const { userId } = req.params;
     const { eventId } = req.body; // ID del evento a agregar
-    console.log(req.params);
-    console.log(req.body);
-    console.log(eventId);
 
     // Buscar el usuario por ID
     const user = await User.findById(userId);

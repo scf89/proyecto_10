@@ -1,23 +1,26 @@
-// src/components/Spinner/Spinner.js
 import "./Spinner.css";
 
 export const Spinner = () => {
+  const overlay = document.createElement("div");
+  overlay.className = "spinner-overlay";
+
   const spinner = document.createElement("div");
   spinner.className = "spinner";
-  return spinner;
+  
+  overlay.appendChild(spinner);
+  return overlay;
 };
 
-// Función para mostrar el spinner en un elemento padre específico
-export const showSpinner = (parentElement) => {
-    const spinner = Spinner();
-    spinner.classList.add("spinner-active");
-    parentElement.appendChild(spinner);
-  };
-  
-  // Función para ocultar el spinner del elemento padre
-  export const hideSpinner = (parentElement) => {
-    const spinner = parentElement.querySelector(".spinner-active");
-    if (spinner) {
-      spinner.remove();
-    }
-  };
+// Función para mostrar el spinner en la pantalla completa
+export const showSpinner = () => {
+  const overlay = Spinner();
+  document.body.appendChild(overlay);
+};
+
+// Función para ocultar el spinner de la pantalla
+export const hideSpinner = () => {
+  const overlay = document.querySelector(".spinner-overlay");
+  if (overlay) {
+    overlay.remove();
+  }
+};
