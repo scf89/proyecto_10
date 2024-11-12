@@ -187,12 +187,12 @@ const addAsistencia = async (idEvento) => {
     // Actualizamos el usuario en localStorage
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
-    showNotification("Asistencia añadida exitosamente al evento.",true);
+    showNotification("Attendance successfully added to the event.",true);
 
     Home(); // Redirigimos o actualizamos la vista
   } catch (error) {
     console.error("Error en la petición:", error);
-    showNotification("Hubo un error al procesar la asistencia.",false);
+    showNotification("There was an error processing the attendance.",false);
   }
 };
 
@@ -206,11 +206,11 @@ const removeAsistencia = async (idEvento) => {
     // Actualizamos el usuario en localStorage
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
-    showNotification("Asistencia eliminada exitosamente del evento.",true);
+    showNotification("Attendance successfully removed to the event.",true);
     Home(); // Recargar los eventos para reflejar el cambio
   } catch (error) {
     console.error("Error en la petición:", error);
-    showNotification("Hubo un error al eliminar la asistencia.",false);
+    showNotification("There was an error removing the attendance.",false);
   }
 };
 
