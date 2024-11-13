@@ -14,7 +14,6 @@ export const Home = async () => {
 
   // Realizamos el fetch a la API de eventos
   const data = await apiFetch("events");
-
   // Obtenemos los eventos
   const eventos = data;
 
@@ -30,6 +29,7 @@ export const pintarEventos = (eventos, elementoPadre) => {
     const titulo = document.createElement("h3");
     const fecha = document.createElement("p");
     const descripcion = document.createElement("p");
+    descripcion.classList.add('descripcion');
     const caratula = document.createElement("img");
     const info = document.createElement("p");
 

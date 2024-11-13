@@ -2,7 +2,8 @@ import { showSpinner, hideSpinner } from "../components/Spinner/Spinner";
 
 export const apiFetch = async (endpoint, method = "GET", data = null, token = null, content_type = "application/json") => {
   showSpinner();
-  let url = `http://localhost:5000/api/${endpoint}`; 
+  const urlBase = import.meta.env.VITE_PROD_URL || "http://localhost:5000";
+  let url = `${urlBase}/api/${endpoint}`; 
   const headers = {};
 
   // Si se proporciona un token, se agrega al encabezado
